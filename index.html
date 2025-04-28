@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertisseur d'unités</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6', // Bleu Tailwind
+                        secondary: '#facc15', // Jaune doré
+                        background: '#1f2937', // Gris très foncé
+                        surface: '#374151', // Gris foncé pour les cartes
+                        accent: '#10b981', // Vert émeraude
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Icônes FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-background text-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8">
+            <h1 class="text-4xl font-extrabold text-center text-primary drop-shadow-lg">Convertisseur d'unités</h1>
+        </header>
+
+        <main class="bg-surface shadow-lg rounded-2xl p-8">
+            <!-- Type de conversion -->
+            <div class="mb-6">
+                <label for="conversion-type" class="block text-gray-300 font-semibold mb-2">Type de conversion</label>
+                <select id="conversion-type"
+                    class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 focus:ring-2 focus:ring-primary">
+                    <option value="length">Longueur</option>
+                    <option value="temperature">Température</option>
+                    <option value="weight">Poids</option>
+                    <option value="volume">Volume</option>
+                    <option value="currency">Monnaies</option>
+                    <option value="crypto">Crypto-monnaies</option>
+                </select>
+            </div>
+
+            <!-- Formulaire -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Source -->
+                <div>
+                    <label for="from-unit" class="block text-gray-300 font-semibold mb-2">De</label>
+                    <select id="from-unit"
+                        class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 mb-2 focus:ring-2 focus:ring-primary"></select>
+                    <input type="number" id="from-value"
+                        class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 focus:ring-2 focus:ring-primary"
+                        placeholder="Valeur à convertir">
+                </div>
+
+                <!-- Cible -->
+                <div>
+                    <label for="to-unit" class="block text-gray-300 font-semibold mb-2">Vers</label>
+                    <select id="to-unit"
+                        class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 mb-2 focus:ring-2 focus:ring-primary"></select>
+                    <input type="text" id="to-value"
+                        class="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-gray-400"
+                        placeholder="Résultat" readonly>
+                </div>
+            </div>
+
+            <!-- Boutons -->
+            <div class="flex mt-8 space-x-4">
+                <button id="convert-btn"
+                    class="bg-primary hover:bg-blue-500 transition-colors text-white px-6 py-3 rounded-lg flex-1 font-semibold">
+                    Convertir
+                </button>
+                <button id="add-favorite-btn"
+                    class="bg-secondary hover:bg-yellow-400 transition-colors text-gray-900 px-6 py-3 rounded-lg">
+                    <i class="fas fa-star"></i>
+                </button>
+            </div>
+
+            <!-- Favoris & Historique -->
+            <div class="mt-10">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-200">Favoris</h2>
+                    <button id="clear-favorites-btn" class="text-sm text-red-400 hover:text-red-500">Tout
+                        effacer</button>
+                </div>
+                <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    <div class="text-gray-500 italic">Aucun favori enregistré</div>
+                </div>
+
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-200">Historique</h2>
+                    <button id="clear-history-btn" class="text-sm text-red-400 hover:text-red-500">Tout effacer</button>
+                </div>
+                <div id="history-list" class="space-y-3">
+                    <div class="text-gray-500 italic">Aucune conversion récente</div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>Projet Atelier Tests Automatisés - EPSI SN2</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/converters/length.js"></script>
+    <script src="js/converters/temperature.js"></script>
+    <script src="js/converters/weight.js"></script>
+    <script src="js/converters/volume.js"></script>
+    <script src="js/converters/currency.js"></script>
+    <script src="js/converters/crypto.js"></script>
+    <script src="js/storage/favorites.js"></script>
+    <script src="js/storage/history.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

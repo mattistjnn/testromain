@@ -1,9 +1,4 @@
-/**
- * Module de conversion de monnaies
- * Utilise l'API https://github.com/fawazahmed0/exchange-api
- */
 const currencyConverter = {
-    // Définition des unités disponibles
     units: {
         EUR: { name: "Euro", symbol: "€" },
         USD: { name: "Dollar américain", symbol: "$" },
@@ -14,28 +9,21 @@ const currencyConverter = {
         AUD: { name: "Dollar australien", symbol: "A$" }
     },
 
-    // Cache des taux de change pour éviter les appels API répétés
     ratesCache: {
         timestamp: null,
         rates: null,
-        expirationTime: 3600000 // 1 heure en millisecondes
+        expirationTime: 3600000
     },
 
-    /**
-     * Obtient les taux de change actuels depuis l'API
-     * @returns {Promise<Object>} - Promesse résolue avec les taux de change
-     */
     async fetchExchangeRates() {
         const now = Date.now();
 
-        // Vérifier si le cache est valide
         if (this.ratesCache.rates && this.ratesCache.timestamp &&
             (now - this.ratesCache.timestamp < this.ratesCache.expirationTime)) {
             return this.ratesCache.rates;
         }
 
         try {
-            // URL correcte de l'API - utilise la dernière version disponible
             const apiUrl = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json';
             const response = await fetch(apiUrl);
 
@@ -45,7 +33,6 @@ const currencyConverter = {
 
             const data = await response.json();
 
-            // Mettre à jour le cache
             this.ratesCache.rates = data.eur;
             this.ratesCache.timestamp = now;
 
@@ -56,20 +43,11 @@ const currencyConverter = {
         }
     },
 
-    /**
-     * Convertit une valeur d'une monnaie à une autre
-     * @param {number} value - Valeur à convertir
-     * @param {string} fromCurrency - Monnaie source
-     * @param {string} toCurrency - Monnaie cible
-     * @returns {Promise<number>} - Promesse résolue avec la valeur convertie
-     */
     async convert(value, fromCurrency, toCurrency) {
-        // Vérification de la validité des unités
         if (!this.units[fromCurrency] || !this.units[toCurrency]) {
             throw new Error("Monnaie non valide");
         }
 
-        // Si les monnaies sont identiques, retourner la valeur telle quelle
         if (fromCurrency === toCurrency) {
             return value;
         }
@@ -77,7 +55,6 @@ const currencyConverter = {
         try {
             const rates = await this.fetchExchangeRates();
 
-            // Les taux sont basés sur l'EUR, donc nous devons calculer en conséquence
             let valueInEUR;
 
             if (fromCurrency === 'EUR') {
@@ -100,10 +77,6 @@ const currencyConverter = {
         }
     },
 
-    /**
-     * Retourne la liste des unités disponibles pour l'interface utilisateur
-     * @returns {Array} - Liste des unités avec leur nom et symbole
-     */
     getUnitOptions() {
         return Object.entries(this.units).map(([key, value]) => ({
             id: key,
@@ -112,7 +85,6 @@ const currencyConverter = {
     }
 };
 
-// Export pour les tests
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = currencyConverter;
 }

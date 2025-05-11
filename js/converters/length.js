@@ -1,63 +1,61 @@
-/**
- * Module de conversion de longueur
- */
-
 const lengthConverter = {
-    // Définition des unités disponibles
+
     units: {
-        meter: { name: "Mètre", symbol: "m" },
-        kilometer: { name: "Kilomètre", symbol: "km" },
-        foot: { name: "Pied", symbol: "ft" },
-        inch: { name: "Pouce", symbol: "in" },
-        yard: { name: "Yard", symbol: "yd" },
-        mile: { name: "Mile", symbol: "mi" }
+        meter: {
+            name: 'Mètres',
+            toBase: (value) => value,
+            fromBase: (value) => value
+        },
+        kilometer: {
+            name: 'Kilomètres',
+            toBase: (value) => value * 1000,
+            fromBase: (value) => value / 1000
+        },
+        foot: {
+            name: 'Pieds',
+            toBase: (value) => value * 0.3048,
+            fromBase: (value) => value / 0.3048
+        },
+        inch: {
+            name: 'Pouces',
+            toBase: (value) => value * 0.0254,
+            fromBase: (value) => value / 0.0254
+        },
+        yard: {
+            name: 'Yards',
+            toBase: (value) => value * 0.9144,
+            fromBase: (value) => value / 0.9144
+        },
+        mile: {
+            name: 'Miles',
+            toBase: (value) => value * 1609.344,
+            fromBase: (value) => value / 1609.344
+        }
     },
 
-    // Facteurs de conversion par rapport au mètre (unité de base)
-    conversionFactors: {
-        meter: 1,
-        kilometer: 0.001,
-        foot: 3.28084,
-        inch: 39.3701,
-        yard: 1.09361,
-        mile: 0.000621371
-    },
-
-    /**
-     * Convertit une valeur d'une unité de longueur à une autre
-     * @param {number} value - Valeur à convertir
-     * @param {string} fromUnit - Unité source
-     * @param {string} toUnit - Unité cible
-     * @returns {number} - Valeur convertie
-     */
     convert(value, fromUnit, toUnit) {
-        // Vérification de la validité des unités
-        if (!this.conversionFactors[fromUnit] || !this.conversionFactors[toUnit]) {
-            throw new Error("Unité de longueur non valide");
+        if (!this.units[fromUnit] || !this.units[toUnit]) {
+            throw new Error(`Unité non valide: ${!this.units[fromUnit] ? fromUnit : toUnit}`);
         }
 
-        // Convertir vers l'unité de base (mètre)
-        const valueInMeters = value / this.conversionFactors[fromUnit];
+        if (fromUnit === toUnit) {
+            return value;
+        }
 
-        // Convertir de l'unité de base vers l'unité cible
-        const result = valueInMeters * this.conversionFactors[toUnit];
+        if (fromUnit === 'foot' && toUnit === 'inch') {
+            return value * 12; // Exactement 12 pouces par pied
+        }
 
-        return Number(result.toFixed(6));
+        const valueInBase = this.units[fromUnit].toBase(value);
+        return this.units[toUnit].fromBase(valueInBase);
     },
 
-    /**
-     * Retourne la liste des unités disponibles pour l'interface utilisateur
-     * @returns {Array} - Liste des unités avec leur nom et symbole
-     */
     getUnitOptions() {
-        return Object.entries(this.units).map(([key, value]) => ({
-            id: key,
-            name: `${value.name} (${value.symbol})`
+        return Object.keys(this.units).map(id => ({
+            id,
+            name: this.units[id].name
         }));
     }
 };
 
-// Export pour les tests
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = lengthConverter;
-}
+module.exports = lengthConverter;

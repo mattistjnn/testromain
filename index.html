@@ -4,111 +4,620 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convertisseur d'unités</title>
-    <!-- Tailwind CSS via CDN -->
+    <title>Convertisseur d'unités Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3b82f6', // Bleu Tailwind
-                        secondary: '#facc15', // Jaune doré
-                        background: '#1f2937', // Gris très foncé
-                        surface: '#374151', // Gris foncé pour les cartes
-                        accent: '#10b981', // Vert émeraude
+                        'neon': {
+                            blue: '#00eeff',
+                            purple: '#b026ff',
+                            pink: '#fe53bb',
+                            green: '#00ffa3',
+                            orange: '#ff9e00'
+                        },
+                        'dark': {
+                            900: '#0f0f12',
+                            800: '#13131a',
+                            700: '#1c1c24',
+                            600: '#26262e',
+                            500: '#2e2e38'
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                     }
                 }
             }
         }
     </script>
-    <!-- Icônes FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --glow-neon-blue: 0 0 15px rgba(0, 238, 255, 0.7);
+            --glow-neon-purple: 0 0 15px rgba(176, 38, 255, 0.7);
+            --glow-neon-pink: 0 0 15px rgba(254, 83, 187, 0.7);
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #0f0f12;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 238, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(176, 38, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, #0f0f12 100%);
+            min-height: 100vh;
+        }
+
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .neon-text-blue {
+            color: #00eeff;
+            text-shadow: 0 0 5px rgba(0, 238, 255, 0.7);
+        }
+
+        .neon-text-purple {
+            color: #b026ff;
+            text-shadow: 0 0 5px rgba(176, 38, 255, 0.7);
+        }
+
+        .neon-text-pink {
+            color: #fe53bb;
+            text-shadow: 0 0 5px rgba(254, 83, 187, 0.7);
+        }
+
+        .neon-text-green {
+            color: #00ffa3;
+            text-shadow: 0 0 5px rgba(0, 255, 163, 0.7);
+        }
+
+        .neon-text-orange {
+            color: #ff9e00;
+            text-shadow: 0 0 5px rgba(255, 158, 0, 0.7);
+        }
+
+        .neon-border-blue {
+            border-color: #00eeff;
+            box-shadow: 0 0 5px rgba(0, 238, 255, 0.7);
+        }
+
+        .neon-border-purple {
+            border-color: #b026ff;
+            box-shadow: 0 0 5px rgba(176, 38, 255, 0.7);
+        }
+
+        .neon-shadow-blue {
+            box-shadow: var(--glow-neon-blue);
+        }
+
+        .glass-effect {
+            background: rgba(38, 38, 46, 0.25);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(38, 38, 46, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+        }
+
+        .gradient-border {
+            position: relative;
+            border-radius: 0.75rem;
+            padding: 0.25rem;
+            background: linear-gradient(90deg, #00eeff, #b026ff, #fe53bb);
+            background-size: 200% 200%;
+            animation: gradient-x 15s ease infinite;
+        }
+
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 0.75rem;
+            padding: 0.25rem;
+            background: linear-gradient(90deg, #00eeff, #b026ff, #fe53bb);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+
+        .input-inner-shadow {
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        select,
+        input[type="number"] {
+            background-image: linear-gradient(to bottom, #1c1c24, #26262e);
+        }
+
+        select option {
+            background-color: #1c1c24;
+        }
+
+        .neon-button-blue {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #0b1622, #0c2841);
+            color: #00eeff;
+            border: 1px solid #00eeff;
+            box-shadow: 0 0 5px rgba(0, 238, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .neon-button-blue:hover {
+            background: linear-gradient(90deg, #0c2841, #0b1622);
+            box-shadow: 0 0 15px rgba(0, 238, 255, 0.9);
+        }
+
+        .neon-button-blue::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.2), transparent);
+            transition: all 0.6s;
+        }
+
+        .neon-button-blue:hover::before {
+            left: 100%;
+        }
+
+        .neon-button-purple {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #1a0b22, #2c0d41);
+            color: #b026ff;
+            border: 1px solid #b026ff;
+            box-shadow: 0 0 5px rgba(176, 38, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .neon-button-purple:hover {
+            background: linear-gradient(90deg, #2c0d41, #1a0b22);
+            box-shadow: 0 0 15px rgba(176, 38, 255, 0.9);
+        }
+
+        .neon-button-purple::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(176, 38, 255, 0.2), transparent);
+            transition: all 0.6s;
+        }
+
+        .neon-button-purple:hover::before {
+            left: 100%;
+        }
+
+        .neon-button-orange {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #221500, #412100);
+            color: #ff9e00;
+            border: 1px solid #ff9e00;
+            box-shadow: 0 0 5px rgba(255, 158, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .neon-button-orange:hover {
+            background: linear-gradient(90deg, #412100, #221500);
+            box-shadow: 0 0 15px rgba(255, 158, 0, 0.9);
+        }
+
+        .neon-button-orange::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 158, 0, 0.2), transparent);
+            transition: all 0.6s;
+        }
+
+        .neon-button-orange:hover::before {
+            left: 100%;
+        }
+
+        .history-item {
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(10px);
+        }
+
+        .favorite-card {
+            transition: all 0.3s ease;
+        }
+
+        .favorite-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Animations pour les éléments flottants */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-delay-1 {
+            animation-delay: 1s;
+        }
+
+        .floating-delay-2 {
+            animation-delay: 2s;
+        }
+
+        /* Effet de glow pour les sections */
+        .section-glow:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.5), transparent);
+        }
+
+        /* Barre de défilement personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #13131a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2e2e38;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00eeff;
+        }
+
+        /* Pulsation d'alerte pour les résultats */
+        .pulse-on-change {
+            animation: pulseEffect 0.5s ease-in-out;
+        }
+
+        @keyframes pulseEffect {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 238, 255, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 238, 255, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 238, 255, 0);
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-background text-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <header class="mb-8">
-            <h1 class="text-4xl font-extrabold text-center text-primary drop-shadow-lg">Convertisseur d'unités</h1>
-        </header>
-
-        <main class="bg-surface shadow-lg rounded-2xl p-8">
-            <!-- Type de conversion -->
-            <div class="mb-6">
-                <label for="conversion-type" class="block text-gray-300 font-semibold mb-2">Type de conversion</label>
-                <select id="conversion-type"
-                    class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 focus:ring-2 focus:ring-primary">
-                    <option value="length">Longueur</option>
-                    <option value="temperature">Température</option>
-                    <option value="weight">Poids</option>
-                    <option value="volume">Volume</option>
-                    <option value="currency">Monnaies</option>
-                    <option value="crypto">Crypto-monnaies</option>
-                </select>
+<body class="text-gray-200">
+    <div class="h-screen overflow-x-hidden overflow-y-auto">
+        <!-- Éléments de fond animés pour une ambiance futuriste -->
+        <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+            <div
+                class="absolute top-10 left-10 w-32 h-32 rounded-full bg-gradient-radial from-neon-blue/10 to-transparent opacity-60 floating">
             </div>
-
-            <!-- Formulaire -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Source -->
-                <div>
-                    <label for="from-unit" class="block text-gray-300 font-semibold mb-2">De</label>
-                    <select id="from-unit"
-                        class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 mb-2 focus:ring-2 focus:ring-primary"></select>
-                    <input type="number" id="from-value"
-                        class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 focus:ring-2 focus:ring-primary"
-                        placeholder="Valeur à convertir">
-                </div>
-
-                <!-- Cible -->
-                <div>
-                    <label for="to-unit" class="block text-gray-300 font-semibold mb-2">Vers</label>
-                    <select id="to-unit"
-                        class="w-full p-3 border border-gray-600 rounded-md bg-background text-gray-100 mb-2 focus:ring-2 focus:ring-primary"></select>
-                    <input type="text" id="to-value"
-                        class="w-full p-3 border border-gray-600 rounded-md bg-gray-700 text-gray-400"
-                        placeholder="Résultat" readonly>
-                </div>
+            <div
+                class="absolute top-1/4 right-20 w-48 h-48 rounded-full bg-gradient-radial from-neon-purple/10 to-transparent opacity-40 floating floating-delay-1">
             </div>
-
-            <!-- Boutons -->
-            <div class="flex mt-8 space-x-4">
-                <button id="convert-btn"
-                    class="bg-primary hover:bg-blue-500 transition-colors text-white px-6 py-3 rounded-lg flex-1 font-semibold">
-                    Convertir
-                </button>
-                <button id="add-favorite-btn"
-                    class="bg-secondary hover:bg-yellow-400 transition-colors text-gray-900 px-6 py-3 rounded-lg">
-                    <i class="fas fa-star"></i>
-                </button>
+            <div
+                class="absolute bottom-20 left-1/3 w-24 h-24 rounded-full bg-gradient-radial from-neon-pink/10 to-transparent opacity-50 floating floating-delay-2">
             </div>
+        </div>
 
-            <!-- Favoris & Historique -->
-            <div class="mt-10">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-bold text-gray-200">Favoris</h2>
-                    <button id="clear-favorites-btn" class="text-sm text-red-400 hover:text-red-500">Tout
-                        effacer</button>
-                </div>
-                <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                    <div class="text-gray-500 italic">Aucun favori enregistré</div>
+        <div class="container mx-auto px-4 py-6 relative z-10">
+            <header class="mb-10 text-center">
+                <h1
+                    class="font-orbitron text-5xl font-bold mb-3 animate-gradient-x bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink inline-block text-transparent bg-clip-text">
+                    CONVERTISSEUR
+                </h1>
+            </header>
+
+            <main class="glass-card rounded-xl overflow-hidden relative max-w-4xl mx-auto">
+                <!-- Effet de bordure animée -->
+                <div
+                    class="absolute inset-0 rounded-xl p-px bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink opacity-50 animate-pulse-slow">
                 </div>
 
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-bold text-gray-200">Historique</h2>
-                    <button id="clear-history-btn" class="text-sm text-red-400 hover:text-red-500">Tout effacer</button>
-                </div>
-                <div id="history-list" class="space-y-3">
-                    <div class="text-gray-500 italic">Aucune conversion récente</div>
-                </div>
-            </div>
-        </main>
+                <div class="relative bg-dark-700 rounded-xl p-8">
+                    <!-- Type de conversion -->
+                    <div class="mb-8">
+                        <label for="conversion-type" class="block text-gray-300 font-semibold mb-3 text-lg">
+                            <i class="fas fa-exchange-alt mr-2 neon-text-blue"></i>Type de conversion
+                        </label>
+                        <div class="relative">
+                            <select id="conversion-type"
+                                class="w-full p-4 rounded-lg border border-dark-500 text-gray-200 appearance-none input-inner-shadow focus:border-neon-blue focus:ring-2 focus:ring-neon-blue/20 transition-all bg-dark-800 backdrop-blur">
+                                <option value="length">Longueur</option>
+                                <option value="temperature">Température</option>
+                                <option value="weight">Poids</option>
+                                <option value="volume">Volume</option>
+                                <option value="currency">Monnaies</option>
+                                <option value="crypto">Crypto-monnaies</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                <i class="fas fa-chevron-down text-neon-blue"></i>
+                            </div>
+                        </div>
+                    </div>
 
-        <footer class="mt-12 text-center text-gray-500 text-sm">
-            <p>Projet Atelier Tests Automatisés - EPSI SN2</p>
-        </footer>
+                    <!-- Grille de conversion -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Source -->
+                        <div class="relative">
+                            <label for="from-unit" class="block text-gray-300 font-semibold mb-3 text-lg">
+                                <i class="fas fa-arrow-right-from-bracket mr-2 neon-text-purple"></i>De
+                            </label>
+                            <div class="relative mb-4">
+                                <select id="from-unit"
+                                    class="w-full p-4 rounded-lg border border-dark-500 text-gray-200 appearance-none input-inner-shadow focus:border-neon-purple focus:ring-2 focus:ring-neon-purple/20 transition-all bg-dark-800">
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                    <i class="fas fa-chevron-down text-neon-purple"></i>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <input type="number" id="from-value"
+                                    class="w-full p-4 rounded-lg border border-dark-500 text-gray-200 input-inner-shadow focus:border-neon-purple focus:ring-2 focus:ring-neon-purple/20 transition-all bg-dark-800"
+                                    placeholder="Valeur à convertir">
+                                <div
+                                    class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none opacity-50">
+                                    <i class="fas fa-keyboard text-neon-purple"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cible -->
+                        <div class="relative">
+                            <label for="to-unit" class="block text-gray-300 font-semibold mb-3 text-lg">
+                                <i class="fas fa-arrow-right-to-bracket mr-2 neon-text-green"></i>Vers
+                            </label>
+                            <div class="relative mb-4">
+                                <select id="to-unit"
+                                    class="w-full p-4 rounded-lg border border-dark-500 text-gray-200 appearance-none input-inner-shadow focus:border-neon-green focus:ring-2 focus:ring-neon-green/20 transition-all bg-dark-800">
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                    <i class="fas fa-chevron-down text-neon-green"></i>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="to-value"
+                                    class="w-full p-4 rounded-lg border border-dark-500 bg-dark-600 text-neon-green font-mono font-bold text-xl input-inner-shadow focus:ring-2 focus:ring-neon-green/20 transition-all"
+                                    placeholder="Résultat" readonly>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                    <i class="fas fa-equals text-neon-green"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action -->
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <button id="convert-btn"
+                            class="flex-1 neon-button-blue flex items-center justify-center gap-2 py-4 px-6 rounded-lg font-bold text-lg transform hover:scale-105 transition-all">
+                            <i class="fas fa-bolt"></i>
+                            <span>Convertir</span>
+                        </button>
+                        <button id="swap-btn"
+                            class="neon-button-purple px-4 py-4 rounded-lg font-bold text-lg transform hover:scale-105 transition-all">
+                            <i class="fas fa-arrows-rotate"></i>
+                        </button>
+                        <button id="add-favorite-btn"
+                            class="neon-button-orange px-4 py-4 rounded-lg font-bold text-lg transform hover:scale-105 transition-all">
+                            <i class="fas fa-star"></i>
+                        </button>
+                    </div>
+
+                    <!-- Section Historique et Favoris -->
+                    <div class="mt-12 pt-10 border-t border-dark-500 relative section-glow">
+                        <!-- Onglets de navigation -->
+                        <div class="flex mb-6 border-b border-dark-500">
+                            <button
+                                class="px-5 py-3 text-neon-blue border-b-2 border-neon-blue font-semibold tab-button active"
+                                data-tab="favoris">
+                                <i class="fas fa-star mr-2"></i>Favoris
+                            </button>
+                            <button class="px-5 py-3 text-gray-400 hover:text-neon-purple transition-colors tab-button"
+                                data-tab="historique">
+                                <i class="fas fa-clock-rotate-left mr-2"></i>Historique
+                            </button>
+                        </div>
+
+                        <!-- Panneau des favoris -->
+                        <div id="tab-favoris" class="tab-panel">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-orbitron neon-text-blue">Conversions enregistrées</h2>
+                                <button id="clear-favorites-btn"
+                                    class="text-sm text-red-400 hover:text-red-500 flex items-center gap-1 transition-colors">
+                                    <i class="fas fa-trash"></i> Tout effacer
+                                </button>
+                            </div>
+                            <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Item de favori exemple -->
+                                <div
+                                    class="bg-dark-800/50 rounded-lg p-3 favorite-card hover:shadow-lg transition-all border border-dark-500 hover:border-neon-blue/50">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-semibold neon-text-blue">10 km → 6.21 miles</h3>
+                                            <p class="text-sm text-gray-400">Longueur</p>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-neon-green hover:text-neon-green/80 transition-colors p-1"
+                                                title="Appliquer">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="text-red-400 hover:text-red-500 transition-colors p-1"
+                                                title="Supprimer">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-dark-800/50 rounded-lg p-3 favorite-card hover:shadow-lg transition-all border border-dark-500 hover:border-neon-blue/50">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-semibold neon-text-blue">25°C → 77°F</h3>
+                                            <p class="text-sm text-gray-400">Température</p>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-neon-green hover:text-neon-green/80 transition-colors p-1"
+                                                title="Appliquer">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="text-red-400 hover:text-red-500 transition-colors p-1"
+                                                title="Supprimer">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Panneau de l'historique -->
+                        <div id="tab-historique" class="tab-panel hidden">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-orbitron neon-text-purple">Dernières conversions</h2>
+                                <button id="clear-history-btn"
+                                    class="text-sm text-red-400 hover:text-red-500 flex items-center gap-1 transition-colors">
+                                    <i class="fas fa-trash"></i> Tout effacer
+                                </button>
+                            </div>
+                            <div id="history-list" class="space-y-2">
+                                <!-- Item d'historique exemple -->
+                                <div
+                                    class="bg-dark-800/50 rounded-lg p-3 history-item hover:bg-dark-700 transition-all border-l-4 border-neon-purple/70">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h3 class="font-medium">10 km → 6.21 miles</h3>
+                                            <p class="text-sm text-gray-400">Il y a 2 minutes</p>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <button class="text-neon-blue hover:text-neon-blue/80 transition-colors p-1"
+                                                title="Réutiliser">
+                                                <i class="fas fa-rotate-left"></i>
+                                            </button>
+                                            <button
+                                                class="text-neon-orange hover:text-neon-orange/80 transition-colors p-1"
+                                                title="Ajouter aux favoris">
+                                                <i class="fas fa-star"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-dark-800/50 rounded-lg p-3 history-item hover:bg-dark-700 transition-all border-l-4 border-neon-purple/70">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h3 class="font-medium">25°C → 77°F</h3>
+                                            <p class="text-sm text-gray-400">Il y a 5 minutes</p>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <button class="text-neon-blue hover:text-neon-blue/80 transition-colors p-1"
+                                                title="Réutiliser">
+                                                <i class="fas fa-rotate-left"></i>
+                                            </button>
+                                            <button
+                                                class="text-neon-orange hover:text-neon-orange/80 transition-colors p-1"
+                                                title="Ajouter aux favoris">
+                                                <i class="fas fa-star"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
-
     <!-- Scripts -->
+    <script>
+        // Script pour gérer le changement d'onglet
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sélectionner tous les boutons d'onglets
+            const tabButtons = document.querySelectorAll('.tab-button');
+
+            // Ajouter un écouteur d'événement à chaque bouton
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Récupérer l'ID de l'onglet à afficher
+                    const tabId = this.getAttribute('data-tab');
+
+                    // Masquer tous les panneaux d'onglets
+                    document.querySelectorAll('.tab-panel').forEach(panel => {
+                        panel.classList.add('hidden');
+                    });
+
+                    // Afficher le panneau d'onglet sélectionné
+                    document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+                    // Mettre à jour l'état actif des boutons d'onglets
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'text-neon-blue', 'border-neon-blue');
+                        btn.classList.add('text-gray-400');
+                    });
+
+                    // Ajouter la classe active au bouton cliqué
+                    this.classList.add('active', 'text-neon-blue', 'border-neon-blue');
+                    this.classList.remove('text-gray-400');
+                });
+            });
+        });
+    </script>
     <script src="js/converters/length.js"></script>
     <script src="js/converters/temperature.js"></script>
     <script src="js/converters/weight.js"></script>
